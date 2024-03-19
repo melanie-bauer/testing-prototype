@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamera-Webapplikation</title>
+    <style>
+        #videoElement {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<button id="startButton">Kamera öffnen</button>
+<video id="videoElement" autoplay playsinline></video>
+
+<script>
+    document.getElementById('startButton').addEventListener('click', function() {
+        const videoElement = document.getElementById('videoElement');
+
+        // Überprüfen, ob die getUserMedia-Funktion unterstützt wird
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }) // Zugriff auf die hinter Kamera
+                .then(function(stream) {
+                    // Stream dem Videoelement zuweisen
+                    videoElement.srcObject = stream;
+                })
+                .catch(function(error) {
+                    // Fehlerbehandlung
+                    console.error('Fehler beim Zugriff auf die Kamera: ', error);
+                    alert('Fehler beim Zugriff auf die Kamera. Stellen Sie sicher, dass die Kamerazugriffsberechtigung erteilt wurde.');
+                });
+        } else {
+            alert('Ihr Browser unterstützt leider keine Kamerazugriffsfunktionen.');
+        }
+    });
+</script>
+</body>
+</html>
